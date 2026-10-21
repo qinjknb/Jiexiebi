@@ -1,0 +1,143 @@
+﻿cat > ~/ramp_test.py <<'PY'
+"""鏂滃潯涓嬪彂娴嬭瘯锛堢簿绠€鐗堬紝閫傚悎鐩存帴绮樿繘缁堢锛夈€?
+鐢ㄦ硶锛?    python3 ramp_test.py [涓插彛] [鑸垫満ID] [璧风偣] [缁堢偣] [绉掓暟] [棰戠巼] [姝诲尯]
+
+渚嬶細
+    python3 ramp_test.py /dev/ttyUSB0 6 1904 1050 3          # 50Hz锛? 绉?    python3 ramp_test.py /dev/ttyUSB0 6 1904 1050 3 20       # 20Hz
+    python3 ramp_test.py /dev/ttyUSB0 6 1904 1050 3 50 3     # 50Hz + 3tick 姝诲尯
+
+瀹冪敤鍜屾ˉ鎺ュ畬鍏ㄧ浉鍚岀殑浜岃繘鍒跺崗璁紙SET_TARGETS @ 50Hz锛夊彧椹卞姩涓€璺埖鏈猴紝
+鐢ㄦ潵鍒ゆ柇瀹炴満鎶栧姩鏄?楂橀涓嬪彂鑺傚"閫犳垚鐨勶紝杩樻槸"MoveIt 缁欑殑鐩爣浣嶇疆"閫犳垚鐨勩€?"""
+
+import sys
+import time
+
+import serial
+
+PORT = sys.argv[1] if len(sys.argv) > 1 else "/dev/ttyUSB0"
+SERVO = int(sys.argv[2]) if len(sys.argv) > 2 else 6
+START = int(sys.argv[3]) if len(sys.argv) > 3 else None
+END = int(sys.argv[4]) if len(sys.argv) > 4 else 1050
+SECS = float(sys.argv[5]) if len(sys.argv) > 5 else 3.0
+RATE = float(sys.argv[6]) if len(sys.argv) > 6 else 50.0
+STEP_MIN = int(sys.argv[7]) if len(sys.argv) > 7 else 0
+
+
+def crc16(data, crc=0xFFFF):
+    for x in data:
+        crc ^= (x << 8) & 0xFFFF
+        for _ in range(8):
+            crc = ((crc << 1) ^ 0x1021) & 0xFFFF if crc & 0x8000 else (crc << 1) & 0xFFFF
+    return crc
+
+
+def frame(cmd, payload=b"", seq=1):
+    body = bytes([cmd, seq, len(payload)]) + payload
+    c = crc16(body)
+    return b"\xaa\x55" + body + bytes([c >> 8, c & 0xFF])
+
+
+def enc(ticks):
+    out = bytearray()
+    for t in ticks:
+        t = max(0, min(4095, int(t)))
+        out += bytes([t >> 8, t & 0xFF])
+    return bytes(out)
+
+
+try:
+    ser = serial.Serial(PORT, 115200, timeout=0.2)
+except Exception as exc:
+    print("鎵撲笉寮€ %s: %s" % (PORT, exc))
+    print("  路 arm_real.launch.py / 涓婁綅鏈烘槸鍚﹁繕鍗犵潃涓插彛锛?)
+    sys.exit(1)
+
+try:
+    ser.dtr = False
+    ser.rts = False
+except Exception:
+    pass
+
+buf = bytearray()
+
+
+def send(cmd, payload=b""):
+    ser.write(frame(cmd, payload))
+    ser.flush()
+
+
+def wait_frame(want, timeout=1.0):
+    """绛変竴甯?AA 55 <want> ...锛岃繑鍥?payload锛堜笉鍚ご/seq/len/crc锛?""
+    end = time.time() + timeout
+    while time.time() < end:
+        buf.extend(ser.read(256))
+        i = buf.find(b"\xaa\x55" + bytes([want]))
+        if i >= 0 and len(buf) >= i + 5:
+            ln = buf[i + 4]
+            if len(buf) >= i + 5 + ln + 2:
+                payload = bytes(buf[i + 5:i + 5 + ln])
+                del buf[:i + 5 + ln + 2]
+                return payload
+    return None
+
+
+# 鎻℃墜
+send(0x01)
+if wait_frame(0x81, 1.0) is None:
+    print("PING 鏃犲簲绛旓細涓插彛琚崰鐢?/ 鍥轰欢娌¤窇 / 鎺ョ嚎涓嶅")
+    sys.exit(1)
+print("STM32 鍦ㄧ嚎 鉁?)
+
+# 璇讳綅缃?send(0x06)
+pos = wait_frame(0x84, 1.0)
+if not pos or len(pos) < 12:
+    print("璇讳綅缃け璐?)
+    sys.exit(1)
+base = [(pos[2 * k] << 8) | pos[2 * k + 1] for k in range(6)]
+idx = SERVO - 1
+if START is None:
+    START = base[idx]
+print("褰撳墠 6 涓綅缃?", base)
+print("鑸垫満 %d: %d -> %d, %.1fs, %.0fHz, 姝诲尯 %d" % (SERVO, START, END, SECS, RATE, STEP_MIN))
+
+# 鍏抽仴娴?+ 杩涜窡闅忔ā寮忥紙閲嶈锛氫笉鐒剁洰鏍囦笉浼氳鎵ц锛?send(0x07, bytes([0]))
+wait_frame(0x82, 0.5)
+send(0x03, bytes([1]))
+wait_frame(0x82, 0.5)
+
+n = max(1, int(SECS * RATE))
+period = 1.0 / RATE
+t0 = time.time()
+sent = 0
+last = None
+for i in range(n + 1):
+    val = int(round(START + (END - START) * i / n))
+    if STEP_MIN and last is not None and abs(val - last) < STEP_MIN:
+        val = last
+    else:
+        last = val
+        sent += 1
+    ticks = list(base)
+    ticks[idx] = val
+    send(0x02, enc(ticks))
+    dt = t0 + (i + 1) * period - time.time()
+    if dt > 0:
+        time.sleep(dt)
+
+print("瀹炲彂 %d 甯? % sent)
+time.sleep(0.8)
+ticks = list(base)
+ticks[idx] = END
+send(0x02, enc(ticks))
+time.sleep(1.0)
+
+send(0x06)
+pos = wait_frame(0x84, 1.0)
+if pos and len(pos) >= 12:
+    print("缁撴潫浣嶇疆:", [(pos[2 * k] << 8) | pos[2 * k + 1] for k in range(6)])
+
+send(0x03, bytes([0]))     # 鍥?IDLE
+ser.close()
+print("\n椤烘粦 -> 涓嬪彂鑺傚娌￠棶棰橈紝闂鍦?MoveIt 缁欑殑鐩爣浣嶇疆锛堟煡 direction / 闄愪綅锛?)
+print("鎶栧姩 -> 鍐嶈瘯 --rate 20 鎴栧姞姝诲尯锛屾妸鍊掓暟绗?2銆? 涓弬鏁版敼鎴?20 / 3")
+PY

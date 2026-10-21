@@ -1,0 +1,38 @@
+# Python and editor caches
+__pycache__/
+*.py[cod]
+.venv/
+.idea/
+.vscode/
+.ipynb_checkpoints/
+
+# ROS / colcon outputs
+My_JXB_test/build/
+My_JXB_test/install/
+My_JXB_test/log/
+
+# Firmware build outputs and local IDE state
+GCWJ/build/
+GCWJ/build_check/
+GCWJ/Listings/
+GCWJ/Objects/
+GCWJ/*.o
+GCWJ/*.uvguix.*
+GCWJ/*.uvoptx
+GCWJ/User/.write_test.tmp
+GCWJ/tools/bin/
+GCWJ/tools/include/
+GCWJ/tools/lib/
+GCWJ/tools/share/
+GCWJ/tools/pylibs/
+GCWJ/tools/pdf-pages/
+GCWJ/tools/*.tar.gz
+ServoHost/build_tmp/
+ServoHost/pip-build-tracker-*/
+ServoHost/pip-ephem-wheel-cache-*/
+ServoHost/pip-install-*/
+ServoHost/pip-unpack-*/
+
+# Temporary files
+*.tmp
+*.log
