@@ -19,6 +19,8 @@
   <exec_depend>trajectory_msgs</exec_depend>
   <exec_depend>python3-serial</exec_depend>
   <exec_depend>python3-yaml</exec_depend>
+  <!-- reach_test 要读这台臂的 URDF 做运动学 -->
+  <exec_depend>dofbot_pro_description</exec_depend>
 
   <!-- launch 里用到的（只在实机 launch 时才会被拉起） -->
   <exec_depend>launch</exec_depend>

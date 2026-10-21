@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'trajectory_bridge = dofbot_hw_bridge.trajectory_bridge:main',
             'servo_tool = dofbot_hw_bridge.servo_tool:main',
+            'reach_test = dofbot_hw_bridge.reach_test:main',
             'dofbot_selftest = dofbot_hw_bridge.selftest:main',
         ],
     },

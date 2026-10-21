@@ -80,6 +80,22 @@ ros2 run dofbot_hw_bridge servo_tool text "PING 1"         # 发原文本命令�
 
 公共参数：`--port /dev/ttyUSB0`、`--baud 115200`、`--calib <yaml>`、`--fake`（用假固件练习）。
 
+## 4.1 最大抓取范围 `reach_test`
+
+自动把抓取点送到桌面上不同半径处，人判断抓没抓住，最后给出实测最大半径。
+
+```bash
+ros2 run dofbot_hw_bridge reach_test --port /dev/ttyUSB0 --dry-run   # 只看点位计划
+ros2 run dofbot_hw_bridge reach_test --port /dev/ttyUSB0             # 正式扫描
+ros2 run dofbot_hw_bridge reach_test --fake --yes --answer y --slow 0.2 --radii 20,30  # 彩排
+```
+
+* 半径→关节角是实时做逆运动学算的（`kin.py`，几何直接读 URDF），不依赖 MoveIt。
+* 每个点先校验正解、再检查软限位余量，超限或太贴边的点直接跳过。
+* 换半径前回中转位、每个点先抬 12 cm 再下探，避免指尖扫过桌面。
+* **跑之前先关掉 `arm_real.launch.py`**（它占着同一个串口）。
+* 详细说明见仓库根目录 `抓取范围实测.md`。
+
 ## 5. 节点参数（也可用 `config/bridge_params.yaml`）
 
 ```
@@ -114,9 +130,11 @@ ros2 service call /dofbot_hw_bridge/status std_srvs/srv/Trigger
 | `protocol.py` | 帧编解码 + CRC16 | `python3 protocol.py` 自测 |
 | `calib.py` | 关节角 ↔ 舵机位置、标定 YAML 读取 | 被其他模块调用 |
 | `traj.py` | 轨迹采样（线性 / 三次 Hermite） | `python3 traj.py` 自测 |
+| `kin.py` | 正/逆运动学（读 URDF）+ 往返自检 | 被 reach_test 调用 |
 | `serial_link.py` | 串口链路、超时、假 STM32 | 被其他模块调用 |
 | `trajectory_bridge.py` | ROS 2 节点（动作服务器 + 状态发布 + 服务） | `ros2 run` |
 | `servo_tool.py` | 命令行调试/标定 | `ros2 run` / `python3 -m` |
+| `reach_test.py` | 最大抓取范围实测（按半径扫描） | `ros2 run` / `python3 -m` |
 | `selftest.py` | 无硬件全链路自测 | `ros2 run` / `python3 -m` |
 
 ## 8. 排查
