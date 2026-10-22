@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import math
 import os
+import struct
 import xml.etree.ElementTree as ET
 
 ARM_JOINTS = ["Arm1_Joint", "Arm2_Joint", "Arm3_Joint", "Arm4_Joint", "Arm5_Joint"]
@@ -314,6 +315,133 @@ class ArmKin:
             cnt += 1
             worst = max(worst, best)
         return worst, cnt
+
+
+# ------------------------------------------------------------------ 手部实体
+class HandGeometry:
+    """用 URDF 里的 STL 网格算"手部真实最低点"。
+
+    为什么需要它：`Gripping_point_Link` 只是指尖上的**一个点**，
+    腕部块（Arm5_Link）和夹爪指片在有些姿态下比这个点更低
+    （实测 30 cm / 腕 120° 时低 8 mm）。判断"会不会蹭桌面"必须看实体最低点。
+    """
+
+    DEFAULT_LINKS = ("Arm5_Link", "DaBai_DCW2_Link", "rlink1", "rlink2", "rlink3",
+                     "llink1", "llink2", "llink3", "Gripping_point_Link")
+
+    def __init__(self, urdf_path, links=None, max_tris=1500):
+        self.urdf_path = os.path.abspath(urdf_path)
+        root = ET.parse(self.urdf_path).getroot()
+        self.joints = {j.get("name"): j for j in root.findall("joint")}
+        self.by_child = {j.find("child").get("link"): j for j in root.findall("joint")}
+        self.links = {}          # name -> [(x,y,z), ...]  已转换到 link 坐标系
+        self.missing = []
+        for L in root.findall("link"):
+            name = L.get("name")
+            if links is not None and name not in links:
+                continue
+            if links is None and name not in self.DEFAULT_LINKS:
+                continue
+            me = L.find("visual/geometry/mesh")
+            if me is None:
+                continue
+            try:
+                verts = self._load_mesh(self._resolve(me.get("filename")), max_tris)
+            except Exception:
+                self.missing.append(name)
+                continue
+            vo = L.find("visual/origin")
+            if vo is not None:
+                xyz = _floats(vo.get("xyz"), 3)
+                Rv = _rpy_to_mat(*_floats(vo.get("rpy"), 3))
+                verts = [[Rv[i][0] * v[0] + Rv[i][1] * v[1] + Rv[i][2] * v[2] + xyz[i]
+                          for i in range(3)] for v in verts]
+            self.links[name] = verts
+
+    # ---- 资源定位 ----
+    def _resolve(self, uri):
+        if uri.startswith("package://"):
+            parts = uri[len("package://"):].split("/")
+            try:
+                from ament_index_python.packages import get_package_share_directory
+                return os.path.join(get_package_share_directory(parts[0]), *parts[1:])
+            except Exception:
+                return os.path.abspath(os.path.join(
+                    os.path.dirname(self.urdf_path), "..", *parts[1:]))
+        if uri.startswith("file://"):
+            return uri[len("file://"):]
+        return os.path.abspath(uri)
+
+    @staticmethod
+    def _load_mesh(path, max_tris):
+        with open(path, "rb") as f:
+            b = f.read()
+        if len(b) >= 84:
+            n = struct.unpack("<I", b[80:84])[0]
+            if n > 0 and 84 + n * 50 == len(b):
+                k = max(1, n // max_tris)
+                out = []
+                for i in range(0, n, k):
+                    f12 = struct.unpack("<12f", b[84 + i * 50:84 + i * 50 + 48])
+                    out.append((f12[3], f12[4], f12[5]))
+                    out.append((f12[6], f12[7], f12[8]))
+                    out.append((f12[9], f12[10], f12[11]))
+                return out
+        # 兜底：ASCII STL
+        txt = b.decode("ascii", "ignore").split()
+        out = []
+        for i, t in enumerate(txt):
+            if t == "vertex" and i + 3 < len(txt):
+                out.append((float(txt[i + 1]), float(txt[i + 2]), float(txt[i + 3])))
+        if not out:
+            raise ValueError("无法解析 STL：%s" % path)
+        return out
+
+    # ---- 正运动学 ----
+    def _q(self, j, qmap):
+        if j.get("type") == "fixed":
+            return 0.0
+        m = j.find("mimic")
+        if m is not None:
+            src = self.joints.get(m.get("joint"))
+            return (self._q(src, qmap) * float(m.get("multiplier", "1"))
+                    + float(m.get("offset", "0")))
+        return float(qmap.get(j.get("name"), 0.0))
+
+    def fk_link(self, link, qmap):
+        chain, cur = [], link
+        while cur in self.by_child:
+            j = self.by_child[cur]
+            chain.append(j)
+            cur = j.find("parent").get("link")
+        chain.reverse()
+        R = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+        t = [0.0, 0.0, 0.0]
+        for j in chain:
+            o = j.find("origin")
+            xyz = _floats(o.get("xyz") if o is not None else None, 3)
+            rpy = _floats(o.get("rpy") if o is not None else None, 3)
+            t = [t[k] + sum(R[k][m] * xyz[m] for m in range(3)) for k in range(3)]
+            R = _mat_mul(R, _rpy_to_mat(*rpy))
+            ax = j.find("axis")
+            if ax is not None:
+                R = _mat_mul(R, _axis_angle(_floats(ax.get("xyz"), 3), self._q(j, qmap)))
+        return R, t
+
+    def lowest_z(self, q_arm, grip_rad=0.0):
+        """手部最低点 -> (z, 哪个零件)。q_arm 是 5 个臂关节角（弧度）。"""
+        qmap = {n: v for n, v in zip(ARM_JOINTS, q_arm)}
+        qmap[GRIP_JOINT] = float(grip_rad)
+        best_z, best_link = 9.0, ""
+        for name, verts in self.links.items():
+            R, t = self.fk_link(name, qmap)
+            r2x, r2y, r2z = R[2]
+            tz = t[2]
+            for v in verts:
+                z = tz + r2x * v[0] + r2y * v[1] + r2z * v[2]
+                if z < best_z:
+                    best_z, best_link = z, name
+        return best_z, best_link
 
 
 # ------------------------------------------------------------------ 定位 URDF
