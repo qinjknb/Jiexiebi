@@ -1,0 +1,66 @@
+# ============================================================================
+# DOFBOT Pro 6 轴机械臂 —— 关节标定文件
+#
+# 这是"仿真关节角"和"真实舵机位置"之间的唯一桥梁，标对了动作才能与仿真一致。
+# 标定方法见包内 README「三、标定」：用 servo_tool 一点点试，把数值填到这里。
+#
+# 换算公式（angle 单位弧度，tick 为舵机原始位置 0~4095）：
+#   tick  = center + direction * angle * 180/pi * 4095 / range_deg
+#   angle = direction * (tick - center) * range_deg/4095 * pi/180
+# ============================================================================
+
+bus:
+  port: /dev/ttyUSB0        # USB-TTL 的串口；Windows/WSL 下可能是 /dev/ttyS* 或 COMx
+  baud: 115200              # 必须与固件 robot_config.h 的 ARM_LINK_BAUD 一致
+  command_rate: 50.0        # 向 STM32 下发目标的频率（Hz），与固件 20ms 周期匹配
+  state_rate: 50.0          # /joint_states 发布频率（Hz）
+  max_velocity: 3000.0      # PC 侧安全限速（ticks/s），0 = 不限制；约 220°/s
+  telem_rate: 25            # 让 STM32 回传状态帧的频率（Hz），用于 /joint_states 真实值
+  link_timeout: 0.4         # 与固件 ARM_LINK_TIMEOUT_MS 对应（秒）
+
+joints:
+  # ---------------- 关节 1：底座旋转（大） ----------------
+  Arm1_Joint:
+    servo_id: 1
+    center: 2033          # ← 实测
+    direction: 1         # ← 第2步判定，反了就改 -1
+    tick_min: 805
+    tick_max: 3261
+    range_deg: 300
+  Arm2_Joint:
+    servo_id: 2
+    center: 2041          # ← 实测
+    direction: 1         # ← 第2步判定，反了就改 -1
+    tick_min: 813
+    tick_max: 3269
+    range_deg: 300
+  Arm3_Joint:
+    servo_id: 3
+    center: 1943          # ← 实测
+    direction: 1         # ← 第2步判定，反了就改 -1
+    tick_min: 715
+    tick_max: 3171
+    range_deg: 300
+  Arm4_Joint:
+    servo_id: 4
+    center: 2015          # ← 实测
+    direction: 1         # ← 第2步判定，反了就改 -1
+    tick_min: 787
+    tick_max: 3243
+    range_deg: 300
+  Arm5_Joint:
+    servo_id: 5
+    center: 1415          # ← 实测
+    direction: 1         # ← 第2步判定，反了就改 -1
+    tick_min: 187
+    tick_max: 2643
+    range_deg: 300
+  grip_joint:
+    servo_id: 6
+    center: 1445        # 比全开端点(1450)低 5 tick：保证静止读数为负，不卡边界
+    direction: -1       # tick 增大 = 闭合（你实测 1739 闭合、1539 张开）
+    tick_min: 1450      # 实测全开端点
+    tick_max: 2945      # 接近实测全合端点(2953)，留 8 tick 防顶死
+    range_deg: 250 
+
+

@@ -1,0 +1,23 @@
+# DOFBOT Pro 实机桥接节点（dofbot_hw_bridge）参数
+#
+# 用法（不用 launch 时）：
+#   ros2 run dofbot_hw_bridge trajectory_bridge --ros-args --params-file bridge_params.yaml
+#
+# 注意：标定（关节零点/方向/限位）在 config/arm_calib.yaml 里，不在这里。
+/**:
+  ros__parameters:
+    calib_file: ""            # 留空 = 用包内 config/arm_calib.yaml
+    port: ""                  # 留空 = 用标定文件里的 bus.port
+    baud: 0                   # 0 = 用标定文件里的 bus.baud
+    hardware: true            # false = 不打开串口（虚拟模式，仅发 /joint_states）
+    auto_home: false          # 启动后先回中位
+    home_time: 2.0            # 回中位用时（秒）
+    command_rate: 0.0         # 0 = 用标定文件 bus.command_rate（默认 50Hz）
+    state_rate: 0.0           # 0 = 用标定文件 bus.state_rate（默认 50Hz）
+    max_velocity: -1.0        # <0 = 用标定文件 bus.max_velocity；0 = 不限制
+    interpolation: auto       # auto|cubic|linear
+    telemetry_source: auto    # auto|meas|cmd（auto = 有遥测就用舵机真实位置）
+    arm_action: /arm_group_controller/follow_joint_trajectory
+    grip_action: /grip_group_controller/follow_joint_trajectory
+    joint_states_topic: /joint_states
+    startup_timeout: 2.0      # 等 STM32 应答的时间（秒）
