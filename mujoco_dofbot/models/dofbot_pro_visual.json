@@ -1,0 +1,262 @@
+{
+  "robot": "DOFBOT_Pro-V24",
+  "source_urdf": "D:\\jixiebi_pro\\3\\src\\dofbot_pro_description\\urdf\\DOFBOT_Pro-V24.urdf",
+  "mjcf": "dofbot_pro.xml",
+  "mesh_scale": 1.0,
+  "missing_meshes": [],
+  "split_meshes": [
+    "Arm4_Link(218574面→2份)"
+  ],
+  "joints": [
+    {
+      "name": "Arm1_Joint",
+      "type": "revolute",
+      "parent": "base_link",
+      "child": "Arm1_Link",
+      "lower": -1.5708,
+      "upper": 1.5708,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mimic": null
+    },
+    {
+      "name": "Arm2_Joint",
+      "type": "revolute",
+      "parent": "Arm1_Link",
+      "child": "Arm2_Link",
+      "lower": -1.5708,
+      "upper": 1.5708,
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "mimic": null
+    },
+    {
+      "name": "Arm3_Joint",
+      "type": "revolute",
+      "parent": "Arm2_Link",
+      "child": "Arm3_Link",
+      "lower": -1.5708,
+      "upper": 1.5708,
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "mimic": null
+    },
+    {
+      "name": "Arm4_Joint",
+      "type": "revolute",
+      "parent": "Arm3_Link",
+      "child": "Arm4_Link",
+      "lower": -1.5708,
+      "upper": 1.5708,
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "mimic": null
+    },
+    {
+      "name": "DaBai_DCW2_Joint",
+      "type": "fixed",
+      "parent": "Arm4_Link",
+      "child": "DaBai_DCW2_Link",
+      "lower": -3.141592653589793,
+      "upper": 3.141592653589793,
+      "axis": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mimic": null
+    },
+    {
+      "name": "Arm5_Joint",
+      "type": "revolute",
+      "parent": "Arm4_Link",
+      "child": "Arm5_Link",
+      "lower": -1.5708,
+      "upper": 3.1416,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "mimic": null
+    },
+    {
+      "name": "grip_joint",
+      "type": "revolute",
+      "parent": "Arm5_Link",
+      "child": "rlink1",
+      "lower": -1.6,
+      "upper": 0.0,
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "mimic": null
+    },
+    {
+      "name": "rlink_joint2",
+      "type": "continuous",
+      "parent": "rlink1",
+      "child": "rlink2",
+      "lower": -3.141592653589793,
+      "upper": 3.141592653589793,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mimic": {
+        "driver": "grip_joint",
+        "multiplier": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "llink_joint1",
+      "type": "continuous",
+      "parent": "Arm5_Link",
+      "child": "llink1",
+      "lower": -3.141592653589793,
+      "upper": 3.141592653589793,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mimic": {
+        "driver": "grip_joint",
+        "multiplier": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "llink_joint2",
+      "type": "continuous",
+      "parent": "llink1",
+      "child": "llink2",
+      "lower": -3.141592653589793,
+      "upper": 3.141592653589793,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mimic": {
+        "driver": "grip_joint",
+        "multiplier": -1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "rlink_joint3",
+      "type": "continuous",
+      "parent": "Arm5_Link",
+      "child": "rlink3",
+      "lower": -3.141592653589793,
+      "upper": 3.141592653589793,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mimic": {
+        "driver": "grip_joint",
+        "multiplier": -1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "llink_joint3",
+      "type": "continuous",
+      "parent": "Arm5_Link",
+      "child": "llink3",
+      "lower": -3.141592653589793,
+      "upper": 3.141592653589793,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mimic": {
+        "driver": "grip_joint",
+        "multiplier": 1.0,
+        "offset": 0.0
+      }
+    },
+    {
+      "name": "Gripping_point_Joint",
+      "type": "fixed",
+      "parent": "Arm5_Link",
+      "child": "Gripping_point_Link",
+      "lower": -3.141592653589793,
+      "upper": 3.141592653589793,
+      "axis": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mimic": null
+    }
+  ],
+  "actuated": [
+    "Arm1_Joint",
+    "Arm2_Joint",
+    "Arm3_Joint",
+    "Arm4_Joint",
+    "Arm5_Joint",
+    "grip_joint",
+    "rlink_joint2",
+    "llink_joint1",
+    "llink_joint2",
+    "rlink_joint3",
+    "llink_joint3"
+  ],
+  "arm_joints": [
+    "Arm1_Joint",
+    "Arm2_Joint",
+    "Arm3_Joint",
+    "Arm4_Joint",
+    "Arm5_Joint",
+    "grip_joint"
+  ],
+  "mimic": {
+    "rlink_joint2": {
+      "driver": "grip_joint",
+      "multiplier": 1.0,
+      "offset": 0.0
+    },
+    "llink_joint1": {
+      "driver": "grip_joint",
+      "multiplier": 1.0,
+      "offset": 0.0
+    },
+    "llink_joint2": {
+      "driver": "grip_joint",
+      "multiplier": -1.0,
+      "offset": 0.0
+    },
+    "rlink_joint3": {
+      "driver": "grip_joint",
+      "multiplier": -1.0,
+      "offset": 0.0
+    },
+    "llink_joint3": {
+      "driver": "grip_joint",
+      "multiplier": 1.0,
+      "offset": 0.0
+    }
+  }
+}

@@ -1,0 +1,76 @@
+<mujoco model="DOFBOT_Pro-V24_collision">
+  <!-- 由 tools/build_collision_model.py 生成：每个连杆一根胶囊，仅用于自碰撞检查 -->
+  <compiler angle="radian" autolimits="true" balanceinertia="true"/>
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+  <size nconmax="400"/>
+  <worldbody>
+    <geom name="tabletop" type="box" pos="0 0 -0.020" size="0.40 0.50 0.025" contype="1" conaffinity="1" rgba="0.35 0.32 0.27 1"/>
+    <body name="base_link" pos="0 0 0.015">
+      <inertial pos="-8.03991e-05 -0.0479091 0.017893" mass="0.226715" diaginertia="0.00124091 0.000941236 0.000320658" quat="-0.499935 0.500033 0.500223 0.499809"/>
+      <geom name="c_base_link" type="capsule" quat="0 0 0 1" fromto="-0.000896523 -0.219225 -0.020562 0.000187156 0.0397339 0.0954519" size="0.0459" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+      <body name="Arm1_Link" pos="0 0 0.0895">
+        <inertial pos="5.85026e-05 8.08931e-07 0.0151588" mass="0.0190944" diaginertia="4.26796e-06 3.23898e-06 2.63e-06" quat="0.707107 -9.5425e-06 -0.707107 -1.20655e-05"/>
+        <joint name="Arm1_Joint" type="hinge" axis="0 0 1" range="-1.5708 1.5708" limited="true"/>
+        <geom name="c_Arm1_Link" type="capsule" fromto="0.0288909 -3.12288e-05 0.0160441 -0.0259609 1.84284e-05 0.0221527" size="0.0246" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+        <body name="Arm2_Link" pos="0 0 0.033">
+          <inertial pos="0.000130416 -0.00344479 0.0308784" mass="0.0490166" diaginertia="1.752e-05 1.39175e-05 7.83531e-06" quat="-0.00433241 0.707646 0.70653 -0.00588337"/>
+          <joint name="Arm2_Joint" type="hinge" axis="1 0 0" range="-1.5708 1.5708" limited="true"/>
+          <geom name="c_Arm2_Link" type="capsule" fromto="0.000948455 -0.000169622 -0.0139292 -0.0014076 4.42819e-05 0.0937425" size="0.0220" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+          <body name="Arm3_Link" pos="-0.00055 0 0.08285">
+            <inertial pos="0.000230967 -0.00348204 0.0312592" mass="0.0484404" diaginertia="1.7508e-05 1.38992e-05 7.82716e-06" quat="-0.00438014 0.707645 0.70653 -0.00593195"/>
+            <joint name="Arm3_Joint" type="hinge" axis="1 0 0" range="-1.5708 1.5708" limited="true"/>
+            <geom name="c_Arm3_Link" type="capsule" fromto="0.00434669 0.00147899 -0.0142655 -0.00297615 -0.000595119 0.0945263" size="0.0222" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+            <body name="Arm4_Link" pos="-5e-05 0 0.08285" quat="0.707107 0.707107 0 0">
+              <inertial pos="0.00022754 0.0310931 0.00147902" mass="0.0514137" diaginertia="1.35775e-05 1.20055e-05 7.79775e-06" quat="0.00647088 0.00369164 0.743558 0.66863"/>
+              <joint name="Arm4_Joint" type="hinge" axis="1 0 0" range="-1.5708 1.5708" limited="true"/>
+              <geom name="c_Arm4_Link" type="capsule" fromto="-0.00175034 -0.0154489 0.00238216 0.000755194 0.0781925 -0.0087747" size="0.0249" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+              <body name="DaBai_DCW2_Link" pos="-0.0002 0.0689 -0.02" quat="0.99999 0.00436331 0 0">
+                <inertial pos="-0.0011147 -0.00351412 -0.00418813" mass="0.0293755" diaginertia="1.80658e-05 1.64393e-05 2.75934e-06" quat="0.491262 -0.499634 -0.500726 0.508233"/>
+                <geom name="c_DaBai_DCW2_Link" type="capsule" fromto="0.0448986 -0.00163152 -0.00155559 -0.0449202 -0.00212866 -0.0020067" size="0.0160" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+              </body>
+              <body name="Arm5_Link" pos="0 0.078149 0.00215">
+                <inertial pos="0.00235741 0.0252993 -0.0177393" mass="0.0430083" diaginertia="5.54153e-06 5.3588e-06 1.97115e-06" quat="0.0457809 0.707274 -0.04602 -0.703953"/>
+                <joint name="Arm5_Joint" type="hinge" axis="0 1 0" range="-1.5708 3.1416" limited="true"/>
+                <geom name="c_Arm5_Link" type="capsule" fromto="0.031734 0.0220385 -0.00527417 -0.0237906 0.0161552 -0.00367677" size="0.0206" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+                <body name="rlink1" pos="0.012625 0.029275 0.00475" quat="0.977611 0 0 0.21042">
+                  <inertial pos="0.00749117 -0.00307322 -0.000464636" mass="0.00469662" diaginertia="5.45545e-07 4.53632e-07 1.01494e-07" quat="0.687128 -0.166899 -0.687128 -0.166899"/>
+                  <joint name="grip_joint" type="hinge" axis="0 0 -1" range="-1.6 0" limited="true"/>
+                  <geom name="c_rlink1" type="capsule" fromto="0.0305315 -0.014167 -0.00411722 -0.0123299 0.00602173 0.000277934" size="0.0082" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+                  <body name="rlink2" pos="0.027229 -0.012593 -0.0025" quat="0.840061 0 0 0.542491">
+                    <inertial pos="0.0226141 0.00598033 -0.0015" mass="0.00614487" diaginertia="1.57602e-06 1.5385e-06 4.67285e-08" quat="-0.0554899 0.704926 0.0554899 0.704926"/>
+                    <joint name="rlink_joint2" type="hinge" axis="0 0 1" limited="false"/>
+                    <geom name="c_rlink2" type="capsule" fromto="0.0505164 0.0123257 -0.0014749 -0.00430156 0.00105896 -0.00154416" size="0.0056" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+                  </body>
+                </body>
+                <body name="llink1" pos="-0.012375 0.029275 0.0045" quat="0.204738 0 0 0.978817">
+                  <inertial pos="0.00820826 0.00331563 -0.000169456" mass="0.00426701" diaginertia="5.36666e-07 4.55979e-07 8.79672e-08" quat="0.688636 0.160561 -0.688636 0.160561"/>
+                  <joint name="llink_joint1" type="hinge" axis="0 0 1" limited="false"/>
+                  <geom name="c_llink1" type="capsule" fromto="0.030771 0.013883 -0.00465024 -0.0121569 -0.00583949 0.00268449" size="0.0071" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+                  <body name="llink2" pos="0.027362 0.012302 -0.0025" quat="0.836901 0 0 -0.547355">
+                    <inertial pos="0.0226936 -0.00567118 -0.0015" mass="0.00614487" diaginertia="1.57602e-06 1.5385e-06 4.67285e-08" quat="0.705288 -0.0506787 -0.705288 -0.0506787"/>
+                    <joint name="llink_joint2" type="hinge" axis="0 0 1" limited="false"/>
+                    <geom name="c_llink2" type="capsule" fromto="0.0506798 -0.0116352 -0.0015251 -0.00428671 -0.00111756 -0.00145584" size="0.0056" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+                  </body>
+                </body>
+                <body name="rlink3" pos="0.0045 0.047275 0.0045" quat="0.977611 0 0 0.21042">
+                  <inertial pos="0.0134815 -0.0060854 -0.0027141" mass="0.00270972" diaginertia="1.63608e-07 1.63255e-07 9.18475e-09" quat="0.594015 -0.594015 -0.383596 0.383596"/>
+                  <joint name="rlink_joint3" type="hinge" axis="0 0 1" limited="false"/>
+                  <geom name="c_rlink3" type="capsule" fromto="0.0301705 -0.0136102 -0.00470745 -0.00279493 0.00127003 -0.00461765" size="0.0079" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+                </body>
+                <body name="llink3" pos="-0.0045 0.047275 0.0045" quat="0.204738 0 0 0.978817">
+                  <inertial pos="0.0135673 0.00589169 -0.0027141" mass="0.00270972" diaginertia="1.63608e-07 1.63255e-07 9.18475e-09" quat="0.38784 -0.38784 -0.591253 0.591253"/>
+                  <joint name="llink_joint3" type="hinge" axis="0 0 1" limited="false"/>
+                  <geom name="c_llink3" type="capsule" fromto="0.0303617 0.0131785 -0.00470778 -0.00281199 -0.00123159 -0.0046174" size="0.0079" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+                </body>
+                <body name="Gripping_point_Link" pos="0 0.09 0">
+                  <inertial pos="0.00156297 -0.0620111 -0.000998562" mass="0.0122493" diaginertia="3.92234e-06 2.3934e-06 1.54729e-06" quat="0.707068 0.0103005 -0.706995 0.0102878"/>
+                  <geom name="c_Gripping_point_Link" type="capsule" fromto="0.0301278 -0.0612941 -0.000993973 -0.0243775 -0.0613074 -0.00101953" size="0.0216" contype="1" conaffinity="1" rgba="0 0.7 1 0.25"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

@@ -1,0 +1,35 @@
+# ============================================================================
+# dofbot_servo_bridge 默认配置
+# 关节角(rad) → 舵机角度(°)：舵机角度 = offset_deg + direction * rad * scale_deg_per_rad
+# 结果自动钳位到 [0, range_deg]
+# ============================================================================
+dofbot_servo_bridge:
+  ros__parameters:
+    # ---- 串口（Ubuntu 上接 STM32 USART2 的 USB-TTL；CH340 常为 /dev/ttyUSB0）----
+    serial_port: /dev/ttyUSB0
+    baudrate: 115200
+
+    # ---- 舵机/命令参数（与 ServoHost、GCWJ 固件约定一致）----
+    range_deg: 300        # 舵机满行程角度（180/270/300/360，按舵机型号）
+    move_time_ms: 100     # 每条 MOVE 的运行时间；轨迹点间隔 50ms(20Hz) 时取 100~150 更平滑
+    max_rate_hz: 20.0     # 命令发送频率上限
+    deadband_deg: 0.2     # 角度死区：与上次发送差小于该值不重复发
+
+    # ---- 无硬件自检：true 时用虚拟串口，命令只打印不发送 ----
+    test_mode: false
+
+    # ---- 关节映射（并行数组，长度必须一致）----
+    # scale_deg_per_rad 默认 180/π ≈ 57.2958；offset 150° 为舵机行程中位。
+    # 机器人实际减速比/安装零点不同时，逐项调 offset 与 direction 即可。
+    joint_names: [Arm1_Joint]
+    servo_ids: [1]
+    offsets_deg: [150.0]
+    scales_deg_per_rad: [57.295779513]
+    directions: [1.0]
+
+    # 接上第二个舵机（ID=2，对应 Arm2_Joint）后改成下面 5 行：
+    # joint_names: [Arm1_Joint, Arm2_Joint]
+    # servo_ids: [1, 2]
+    # offsets_deg: [150.0, 150.0]
+    # scales_deg_per_rad: [57.295779513, 57.295779513]
+    # directions: [1.0, 1.0]

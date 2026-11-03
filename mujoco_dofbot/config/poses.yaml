@@ -1,0 +1,21 @@
+# 实机实测记录的命名姿态（SRDF 之外）
+# 由 tools/record_pose.py 生成；servo_deg 用来驱动实物，
+# joint_rad 用来在 MuJoCo 里摆出同一姿态。
+scan:
+  note: 扫描位（深度相机取景点）
+  recorded_at: '2026-10-31 15:15:25'
+  source_config: calibrated.yaml
+  servo_deg:
+    1: 152.31
+    2: 91.43
+    3: 232.75
+    4: 226.23
+    5: 105.35
+    6: 198.61
+  joint_rad:
+    Arm1_Joint: 0.0038
+    Arm2_Joint: -0.97305
+    Arm3_Joint: 1.59693
+    Arm4_Joint: 1.41297
+    Arm5_Joint: 0.03075
+    grip_joint: -1.5835

@@ -1,0 +1,131 @@
+<mujoco model="DOFBOT_Pro-V24">
+  <!-- Photo comparison variant: base plate turned 180 deg; camera lifted above ID5. -->
+  <!-- 由 urdf2mjcf.py 从 DOFBOT_Pro-V24.urdf 生成；可直接手改 -->
+  <compiler angle="radian" autolimits="true" balanceinertia="true" discardvisual="false"/>
+  <option timestep="0.002" integrator="implicitfast" gravity="0 0 -9.81"/>
+  <size nconmax="120" njmax="400"/>
+  <visual>
+    <global offwidth="1280" offheight="720" fovy="45"/>
+    <headlight ambient="0.35 0.35 0.38" diffuse="0.65 0.65 0.65" specular="0.1 0.1 0.1"/>
+    <map znear="0.01" zfar="20" shadowclip="0.5"/>
+    <quality shadowsize="4096" offsamples="4"/>
+  </visual>
+  <asset>
+    <mesh name="Arm1_Link" file="../../src/dofbot_pro_description/meshes/Arm1_Link.STL"/>
+    <mesh name="Arm2_Link" file="../../src/dofbot_pro_description/meshes/Arm2_Link.STL"/>
+    <mesh name="Arm3_Link" file="../../src/dofbot_pro_description/meshes/Arm3_Link.STL"/>
+    <mesh name="Arm4_Link_p0" file="mesh_parts/Arm4_Link_p0.STL"/>
+    <mesh name="Arm4_Link_p1" file="mesh_parts/Arm4_Link_p1.STL"/>
+    <mesh name="Arm5_Link" file="../../src/dofbot_pro_description/meshes/Arm5_Link.STL"/>
+    <mesh name="DaBai_DCW2_Link" file="../../src/dofbot_pro_description/meshes/DaBai_DCW2_Link.STL"/>
+    <mesh name="Gripping_point_Link" file="../../src/dofbot_pro_description/meshes/Gripping_point_Link.STL"/>
+    <mesh name="base_link" file="../../src/dofbot_pro_description/meshes/base_link.STL"/>
+    <mesh name="llink1" file="../../src/dofbot_pro_description/meshes/llink1.STL"/>
+    <mesh name="llink2" file="../../src/dofbot_pro_description/meshes/llink2.STL"/>
+    <mesh name="llink3" file="../../src/dofbot_pro_description/meshes/llink3.STL"/>
+    <mesh name="rlink1" file="../../src/dofbot_pro_description/meshes/rlink1.STL"/>
+    <mesh name="rlink2" file="../../src/dofbot_pro_description/meshes/rlink2.STL"/>
+    <mesh name="rlink3" file="../../src/dofbot_pro_description/meshes/rlink3.STL"/>
+    <material name="mat0" rgba="1 1 1 1"/>
+    <material name="mat1" rgba="0.25098 0.25098 0.25098 1"/>
+    <texture name="skybox" type="skybox" builtin="gradient" rgb1="0.25 0.29 0.34" rgb2="0.06 0.07 0.09" width="512" height="512"/>
+    <texture name="grid" type="2d" builtin="checker" rgb1="0.16 0.17 0.19" rgb2="0.11 0.12 0.13" width="512" height="512"/>
+    <material name="grid" texture="grid" texrepeat="8 8" reflectance="0.05"/>
+  </asset>
+  <default>
+    <joint damping="0.15" armature="0.004" frictionloss="0.02"/>
+    <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+    <default class="collide">
+      <geom type="mesh" contype="1" conaffinity="1" group="3" rgba="0 0.6 1 0.25"/>
+    </default>
+    <default class="motor">
+      <position kp="80" kv="5" forcerange="-100 100"/>
+    </default>
+  </default>
+  <worldbody>
+    <light pos="0.6 -0.6 1.4" dir="-0.4 0.4 -1" directional="true" diffuse="0.5 0.5 0.5" specular="0.2 0.2 0.2" castshadow="true"/>
+    <geom name="floor" type="plane" size="2 2 0.05" pos="0 0 0" material="grid" contype="1" conaffinity="1" group="1"/>
+    <camera name="view" pos="0.750 -0.750 0.600" xyaxes="0.7 0.7 0 -0.3 0.3 1"/>
+    <body name="base_link" pos="0 0 0.015">
+      <inertial pos="-8.03991e-05 -0.0479091 0.017893" mass="0.226715" diaginertia="0.00124091 0.000941236 0.000320658" quat="-0.499935 0.500033 0.500223 0.499809"/>
+      <geom mesh="base_link" material="mat0" quat="0 0 0 1"/>
+      <body name="Arm1_Link" pos="0 0 0.0895">
+        <inertial pos="5.85026e-05 8.08931e-07 0.0151588" mass="0.0190944" diaginertia="4.26796e-06 3.23898e-06 2.63e-06" quat="0.707107 -9.5425e-06 -0.707107 -1.20655e-05"/>
+        <joint name="Arm1_Joint" type="hinge" axis="0 0 1" range="-1.5708 1.5708" limited="true"/>
+        <geom mesh="Arm1_Link" material="mat0"/>
+        <body name="Arm2_Link" pos="0 0 0.033">
+          <inertial pos="0.000130416 -0.00344479 0.0308784" mass="0.0490166" diaginertia="1.752e-05 1.39175e-05 7.83531e-06" quat="-0.00433241 0.707646 0.70653 -0.00588337"/>
+          <joint name="Arm2_Joint" type="hinge" axis="1 0 0" range="-1.5708 1.5708" limited="true"/>
+          <geom mesh="Arm2_Link" material="mat0"/>
+          <body name="Arm3_Link" pos="-0.00055 0 0.08285">
+            <inertial pos="0.000230967 -0.00348204 0.0312592" mass="0.0484404" diaginertia="1.7508e-05 1.38992e-05 7.82716e-06" quat="-0.00438014 0.707645 0.70653 -0.00593195"/>
+            <joint name="Arm3_Joint" type="hinge" axis="1 0 0" range="-1.5708 1.5708" limited="true"/>
+            <geom mesh="Arm3_Link" material="mat0"/>
+            <body name="Arm4_Link" pos="-5e-05 0 0.08285" quat="0.707107 0.707107 0 0">
+              <inertial pos="0.00022754 0.0310931 0.00147902" mass="0.0514137" diaginertia="1.35775e-05 1.20055e-05 7.79775e-06" quat="0.00647088 0.00369164 0.743558 0.66863"/>
+              <joint name="Arm4_Joint" type="hinge" axis="1 0 0" range="-1.5708 1.5708" limited="true"/>
+              <geom mesh="Arm4_Link_p0" material="mat0"/>
+              <geom mesh="Arm4_Link_p1" material="mat0"/>
+              <body name="DaBai_DCW2_Link" pos="-0.0002 0.0689 -0.02" quat="0.99999 0.00436331 0 0">
+                <inertial pos="-0.0011147 -0.00351412 -0.00418813" mass="0.0293755" diaginertia="1.80658e-05 1.64393e-05 2.75934e-06" quat="0.491262 -0.499634 -0.500726 0.508233"/>
+                <geom mesh="DaBai_DCW2_Link" material="mat1"/>
+              </body>
+              <body name="Arm5_Link" pos="0 0.078149 0.00215">
+                <inertial pos="0.00235741 0.0252993 -0.0177393" mass="0.0430083" diaginertia="5.54153e-06 5.3588e-06 1.97115e-06" quat="0.0457809 0.707274 -0.04602 -0.703953"/>
+                <joint name="Arm5_Joint" type="hinge" axis="0 1 0" range="-1.5708 3.1416" limited="true"/>
+                <geom mesh="Arm5_Link" material="mat1"/>
+                <body name="rlink1" pos="0.012625 0.029275 0.00475" quat="0.977611 0 0 0.21042">
+                  <inertial pos="0.00749117 -0.00307322 -0.000464636" mass="0.00469662" diaginertia="5.45545e-07 4.53632e-07 1.01494e-07" quat="0.687128 -0.166899 -0.687128 -0.166899"/>
+                  <joint name="grip_joint" type="hinge" axis="0 0 -1" range="-1.6 0" limited="true"/>
+                  <geom mesh="rlink1" material="mat0"/>
+                  <body name="rlink2" pos="0.027229 -0.012593 -0.0025" quat="0.840061 0 0 0.542491">
+                    <inertial pos="0.0226141 0.00598033 -0.0015" mass="0.00614487" diaginertia="1.57602e-06 1.5385e-06 4.67285e-08" quat="-0.0554899 0.704926 0.0554899 0.704926"/>
+                    <joint name="rlink_joint2" type="hinge" axis="0 0 1" limited="false"/>
+                    <geom mesh="rlink2" material="mat0"/>
+                  </body>
+                </body>
+                <body name="llink1" pos="-0.012375 0.029275 0.0045" quat="0.204738 0 0 0.978817">
+                  <inertial pos="0.00820826 0.00331563 -0.000169456" mass="0.00426701" diaginertia="5.36666e-07 4.55979e-07 8.79672e-08" quat="0.688636 0.160561 -0.688636 0.160561"/>
+                  <joint name="llink_joint1" type="hinge" axis="0 0 1" limited="false"/>
+                  <geom mesh="llink1" material="mat0"/>
+                  <body name="llink2" pos="0.027362 0.012302 -0.0025" quat="0.836901 0 0 -0.547355">
+                    <inertial pos="0.0226936 -0.00567118 -0.0015" mass="0.00614487" diaginertia="1.57602e-06 1.5385e-06 4.67285e-08" quat="0.705288 -0.0506787 -0.705288 -0.0506787"/>
+                    <joint name="llink_joint2" type="hinge" axis="0 0 1" limited="false"/>
+                    <geom mesh="llink2" material="mat0"/>
+                  </body>
+                </body>
+                <body name="rlink3" pos="0.0045 0.047275 0.0045" quat="0.977611 0 0 0.21042">
+                  <inertial pos="0.0134815 -0.0060854 -0.0027141" mass="0.00270972" diaginertia="1.63608e-07 1.63255e-07 9.18475e-09" quat="0.594015 -0.594015 -0.383596 0.383596"/>
+                  <joint name="rlink_joint3" type="hinge" axis="0 0 1" limited="false"/>
+                  <geom mesh="rlink3" material="mat0"/>
+                </body>
+                <body name="llink3" pos="-0.0045 0.047275 0.0045" quat="0.204738 0 0 0.978817">
+                  <inertial pos="0.0135673 0.00589169 -0.0027141" mass="0.00270972" diaginertia="1.63608e-07 1.63255e-07 9.18475e-09" quat="0.38784 -0.38784 -0.591253 0.591253"/>
+                  <joint name="llink_joint3" type="hinge" axis="0 0 1" limited="false"/>
+                  <geom mesh="llink3" material="mat0"/>
+                </body>
+                <body name="Gripping_point_Link" pos="0 0.09 0">
+                  <inertial pos="0.00156297 -0.0620111 -0.000998562" mass="0.0122493" diaginertia="3.92234e-06 2.3934e-06 1.54729e-06" quat="0.707068 0.0103005 -0.706995 0.0102878"/>
+                  <geom mesh="Gripping_point_Link" material="mat0"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <position class="motor" name="act_Arm1_Joint" joint="Arm1_Joint" ctrlrange="-1.5708 1.5708"/>
+    <position class="motor" name="act_Arm2_Joint" joint="Arm2_Joint" ctrlrange="-1.5708 1.5708"/>
+    <position class="motor" name="act_Arm3_Joint" joint="Arm3_Joint" ctrlrange="-1.5708 1.5708"/>
+    <position class="motor" name="act_Arm4_Joint" joint="Arm4_Joint" ctrlrange="-1.5708 1.5708"/>
+    <position class="motor" name="act_Arm5_Joint" joint="Arm5_Joint" ctrlrange="-1.5708 3.1416"/>
+    <position class="motor" name="act_grip_joint" joint="grip_joint" ctrlrange="-1.6 0"/>
+    <position class="motor" name="act_rlink_joint2" joint="rlink_joint2" ctrlrange="-3.14159 3.14159"/>
+    <position class="motor" name="act_llink_joint1" joint="llink_joint1" ctrlrange="-3.14159 3.14159"/>
+    <position class="motor" name="act_llink_joint2" joint="llink_joint2" ctrlrange="-3.14159 3.14159"/>
+    <position class="motor" name="act_rlink_joint3" joint="rlink_joint3" ctrlrange="-3.14159 3.14159"/>
+    <position class="motor" name="act_llink_joint3" joint="llink_joint3" ctrlrange="-3.14159 3.14159"/>
+  </actuator>
+</mujoco>

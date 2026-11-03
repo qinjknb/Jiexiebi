@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>dofbot_servo_bridge</name>
+  <version>1.0.0</version>
+  <description>ROS2 /joint_states 到德晟智能舵机的仿真-实物同步桥：关节角(rad)换算为舵机角度，经 USB-TTL 以文本协议发送给 STM32（GCWJ 固件），再由 PA9 总线驱动舵机</description>
+  <maintainer email="user@example.com">user</maintainer>
+  <license>Apache-2.0</license>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>python3-serial</exec_depend>
+  <!-- bridge_cycle.launch.py includes two_joint_cycle.launch.py from this
+       package, so declare it as a dependency so that
+       colcon build with packages_up_to dofbot_servo_bridge also builds it -->
+  <exec_depend>dofbot_two_joint_cycle</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

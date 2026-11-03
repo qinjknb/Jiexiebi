@@ -1,0 +1,41 @@
+# 相机外参（半自动：按桌面水平面定朝向）
+# 由 tools/manual_extrinsic.py 生成；不是手眼标定的结果
+tool_link: DaBai_DCW2_Link
+source: manual/auto（按桌面平面定朝向）
+T_tool_cam:
+- - 1.0
+  - 0.0
+  - 0.0
+  - 0.0
+- - 0.0
+  - 1.0
+  - 0.0
+  - 0.0
+- - 0.0
+  - 0.0
+  - 1.0
+  - 0.0
+- - 0.0
+  - 0.0
+  - 0.0
+  - 1.0
+camera_axes_in_link:
+  x: +x
+  y: +y
+  z: +z
+cam_forward: +z
+cam_right: +x
+cam_down: +y
+optical_offset_mm:
+- 0.0
+- 0.0
+- 0.0
+plane_residual_mm: 1.48
+plane_verticality: 0.969
+table_bias_mm: 0.6123148722042628
+optical_centre_z_m: 0.14424099110236588
+intrinsics:
+  fx: 482.8
+  fy: 482.8
+  cx: 319.5
+  cy: 239.5

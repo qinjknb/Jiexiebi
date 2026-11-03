@@ -1,0 +1,91 @@
+# 手眼标定样本（tools/handeye_calib.py 生成）
+# 每个样本 = 一组关节角 + 该帧检测到的全部 ArUco 四角像素坐标
+board:
+  dict: DICT_4X4_50
+  cols: 2
+  rows: 3
+  marker_mm: 70.0
+  gap_mm: 23.33
+  marker_ids:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  board_mm:
+  - 163.3
+  - 256.7
+  total_mm:
+  - 198.3
+  - 291.7
+  dpi: 300
+  measured_note: 用户实测黑框 70 mm（设计 60 mm，打印放大 1.167x，间距按同比例缩放）
+marker:
+  dict: DICT_4X4_50
+  id: null
+  size_mm: 70.0
+  image_size:
+  - 640
+  - 480
+samples:
+- name: holdout
+  recorded_at: '2026-11-03 15:19:39'
+  joint_rad:
+    Arm1_Joint: -0.15602
+    Arm2_Joint: -0.09118
+    Arm3_Joint: 1.14102
+    Arm4_Joint: 1.11816
+    Arm5_Joint: 0.00891
+    grip_joint: -1.58478
+  markers:
+  - id: 0
+    corners:
+    - - 511.0
+      - 281.0
+    - - 368.0
+      - 278.0
+    - - 371.0
+      - 184.0
+    - - 490.0
+      - 189.0
+  - id: 1
+    corners:
+    - - 320.0
+      - 277.0
+    - - 188.0
+      - 272.0
+    - - 217.0
+      - 181.0
+    - - 330.0
+      - 183.0
+  - id: 4
+    corners:
+    - - 464.0
+      - 98.0
+    - - 374.0
+      - 99.0
+    - - 375.0
+      - 61.0
+    - - 454.0
+      - 58.0
+  - id: 5
+    corners:
+    - - 342.0
+      - 99.0
+    - - 256.0
+      - 96.0
+    - - 270.0
+      - 60.0
+    - - 347.0
+      - 61.0
+  corners:
+  - - 511.0
+    - 281.0
+  - - 368.0
+    - 278.0
+  - - 371.0
+    - 184.0
+  - - 490.0
+    - 189.0
+  marker_id: 0

@@ -1,0 +1,57 @@
+# =============================================================================
+# 实机同步 demo（小幅度、相对运动）
+#
+# 为什么用相对运动：实机六个舵机的 offset/direction 还没标定，
+# 直接命令 SRDF 的绝对姿态（init/up）会让仿真和实物对不上，也可能把关节
+# 顶到机械限位。改成「从实测姿态出发 + 每轴只走 ~8°」，则仿真和实物走的
+# 是同一个角度差，绝对零点错不错都不影响同步效果，也不会超出行程。
+#
+# 跑法：
+#   python run.py --config config/demo.yaml --start-from-servo \
+#       --servo live --calibration-confirmed --segment-seconds 3
+# =============================================================================
+
+model:
+  mjcf: models/dofbot_pro.xml
+  srdf: ../src/My_JXB_moveit/config/DOFBOT_Pro-V24.srdf
+
+control:
+  mode: kinematic
+  rate_hz: 50.0
+
+cycle:
+  steps:
+    # 五个手臂关节一起抬 0.15 rad(≈8.6°)，夹爪也松一点
+    - relative: {Arm1_Joint: 0.15, Arm2_Joint: 0.15, Arm3_Joint: 0.15,
+                 Arm4_Joint: 0.15, Arm5_Joint: 0.15, grip_joint: 0.20}
+      hold: 0.4
+    # 原路回到起点
+    - relative: {Arm1_Joint: 0.0, Arm2_Joint: 0.0, Arm3_Joint: 0.0,
+                 Arm4_Joint: 0.0, Arm5_Joint: 0.0, grip_joint: 0.0}
+      hold: 0.4
+  repeat: 2
+  segment_seconds: 3.0
+  pause_seconds: 0.3
+  profile: cosine
+  endpoint_tolerance_rad: 0.01
+
+servo:
+  enabled: true
+  port: ""            # 留空=自动找 CH340（串口号会随插拔变化）
+  baudrate: 115200
+  test_mode: false
+  enable_motion: true
+  calibration_confirmed: true      # 本次只在实测姿态附近做相对微动，不依赖标定
+  range_deg: 300
+  max_rate_hz: 10.0
+  move_time_ms: 120
+  deadband_deg: 0.2
+  state_timeout_sec: 0.5
+  start_tolerance_deg: 10.0
+  joints:
+    - {name: Arm1_Joint, id: 1, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm2_Joint, id: 2, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm3_Joint, id: 3, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm4_Joint, id: 4, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm5_Joint, id: 5, offset_deg: 150.0, direction: 1.0}
+    - {name: grip_joint, id: 6, offset_deg: 150.0, direction: 1.0}

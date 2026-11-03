@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>dofbot_servo_bridge</name>
+  <version>1.0.0</version>
+  <description>Mirror the six MoveIt simulated joints to GCWJ serial bus servos.</description>
+  <maintainer email="user@example.com">user</maintainer>
+  <license>Apache-2.0</license>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>python3-serial</exec_depend>
+  <exec_depend>My_JXB_moveit</exec_depend>
+  <exec_depend>dofbot_cycle_demo</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>moveit_configs_utils</exec_depend>
+  <export><build_type>ament_python</build_type></export>
+</package>

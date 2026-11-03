@@ -1,0 +1,11 @@
+# User-reported supply; rated range and voltage at the servo are not measured.
+reported_supply_voltage_v: 5.0
+servo_model: null
+rated_voltage_min_v: null
+rated_voltage_max_v: null
+supply_current_rating_a: null
+measured_idle_voltage_v: null
+measured_moving_min_voltage_v: null
+power_verified: false
+id4_compensation_validated: false
+note: A single compensated move reached 0.05 deg error; a later trial timed out. Do not treat the compensation as validated.

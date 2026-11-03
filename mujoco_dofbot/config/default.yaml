@@ -1,0 +1,61 @@
+# =============================================================================
+# DOFBOT Pro MuJoCo 配置（Windows）
+# 参数名与 Ubuntu 上 src/dofbot_servo_bridge/config/bridge.yaml 一一对应，
+# 方便两边对照；区别只是这边不经过 ROS。
+# =============================================================================
+
+model:
+  # 由 tools 里的 urdf2mjcf 从 src/dofbot_pro_description 的 URDF 生成
+  mjcf: models/dofbot_pro.xml
+  # 命名姿态（init/up/close/open…）直接复用 MoveIt 的 SRDF，两边角度不会走偏
+  srdf: ../src/My_JXB_moveit/config/DOFBOT_Pro-V24.srdf
+
+control:
+  # kinematic：直接摆关节角，等价 Ubuntu 上的 mock_components（默认，最稳）
+  # physics  ：走位置执行器 + 重力，看起来更像真机，但会有一点点跟随误差
+  mode: kinematic
+  rate_hz: 50.0
+
+cycle:
+  # 与 src/dofbot_cycle_demo/src/cycle_demo.cpp 的动作顺序一致：
+  # 机械臂去 init → 夹爪闭合 → 机械臂回 up → 夹爪张开
+  steps:
+    - arm: init
+    - grip: close
+    - arm: up
+    - grip: open
+  repeat: 3              # 0 = 一直循环到 Ctrl+C
+  segment_seconds: 6.0   # 每一段运动时长（对应 MoveIt speed≈0.1 的节奏）
+  pause_seconds: 0.5     # 每段之间停顿
+  profile: cosine        # cosine（缓入缓出，默认）| linear
+  endpoint_tolerance_rad: 0.01
+
+servo:
+  enabled: true
+  # Windows 串口名；留空则自动找 CH340
+  port: ""            # 留空=自动找 CH340（串口号会随插拔变化）
+  baudrate: 115200
+  # 下面三道闸沿用 Ubuntu 版设计：
+  #   test_mode=true          只打印 MOVE，不打开串口（默认，先看命令流）
+  #   enable_motion=true      允许发运动指令
+  #   calibration_confirmed   确认真机六轴方向/零点已标定后才设 true
+  test_mode: true
+  enable_motion: true
+  calibration_confirmed: false
+
+  range_deg: 300
+  max_rate_hz: 10.0
+  move_time_ms: 120
+  deadband_deg: 0.2
+  state_timeout_sec: 0.5
+  start_tolerance_deg: 10.0
+
+  # 一个关节一段，比 bridge.yaml 的 5 个并行数组更好读；语义完全一致：
+  #   舵机角度(°) = offset_deg + direction × 关节角(rad) × scale_deg_per_rad
+  joints:
+    - {name: Arm1_Joint, id: 1, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm2_Joint, id: 2, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm3_Joint, id: 3, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm4_Joint, id: 4, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm5_Joint, id: 5, offset_deg: 150.0, direction: 1.0}
+    - {name: grip_joint, id: 6, offset_deg: 150.0, direction: 1.0}

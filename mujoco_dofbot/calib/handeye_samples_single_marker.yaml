@@ -1,0 +1,314 @@
+# 手眼标定样本（tools/handeye_calib.py 生成）
+# 每个样本 = 一组关节角 + 一张图上 ArUco 四角的像素坐标
+marker:
+  dict: DICT_4X4_50
+  id: 0
+  size_mm: 125.0
+  image_size:
+  - 640
+  - 480
+samples:
+- name: p01
+  recorded_at: '2026-10-31 15:56:47'
+  joint_rad:
+    Arm1_Joint: 0.03449
+    Arm2_Joint: -0.96282
+    Arm3_Joint: 1.83603
+    Arm4_Joint: 1.21094
+    Arm5_Joint: 0.0461
+    grip_joint: -1.59629
+  corners:
+  - - 256.0
+    - 138.0
+  - - 277.0
+    - 23.0
+  - - 448.0
+    - 22.0
+  - - 469.0
+    - 139.0
+  marker_id: 0
+- name: p02
+  recorded_at: '2026-10-31 15:56:51'
+  joint_rad:
+    Arm1_Joint: 0.03321
+    Arm2_Joint: -1.12137
+    Arm3_Joint: 1.83603
+    Arm4_Joint: 1.21094
+    Arm5_Joint: 0.0461
+    grip_joint: -1.59629
+  corners:
+  - - 263.0
+    - 201.0
+  - - 283.0
+    - 90.0
+  - - 441.0
+    - 89.0
+  - - 463.0
+    - 202.0
+  marker_id: 0
+- name: p03
+  recorded_at: '2026-10-31 15:56:53'
+  joint_rad:
+    Arm1_Joint: 0.03449
+    Arm2_Joint: -1.2991
+    Arm3_Joint: 1.83603
+    Arm4_Joint: 1.21094
+    Arm5_Joint: 0.0461
+    grip_joint: -1.59629
+  corners:
+  - - 271.0
+    - 297.0
+  - - 291.0
+    - 197.0
+  - - 434.0
+    - 196.0
+  - - 458.0
+    - 300.0
+  marker_id: 0
+- name: p04
+  recorded_at: '2026-10-31 15:56:57'
+  joint_rad:
+    Arm1_Joint: 0.03449
+    Arm2_Joint: -1.31572
+    Arm3_Joint: 2.00737
+    Arm4_Joint: 1.21094
+    Arm5_Joint: 0.0461
+    grip_joint: -1.59629
+  corners:
+  - - 266.0
+    - 238.0
+  - - 286.0
+    - 139.0
+  - - 437.0
+    - 138.0
+  - - 460.0
+    - 239.0
+  marker_id: 0
+- name: p05
+  recorded_at: '2026-10-31 15:56:59'
+  joint_rad:
+    Arm1_Joint: 0.03449
+    Arm2_Joint: -1.31572
+    Arm3_Joint: 2.12628
+    Arm4_Joint: 1.20072
+    Arm5_Joint: 0.0461
+    grip_joint: -1.59757
+  corners:
+  - - 253.0
+    - 149.0
+  - - 274.0
+    - 41.0
+  - - 442.0
+    - 38.0
+  - - 466.0
+    - 147.0
+  marker_id: 0
+- name: p06
+  recorded_at: '2026-10-31 16:01:05'
+  joint_rad:
+    Arm1_Joint: 0.04088
+    Arm2_Joint: -0.62782
+    Arm3_Joint: 1.49592
+    Arm4_Joint: 1.17003
+    Arm5_Joint: 0.05121
+    grip_joint: -1.59629
+  corners:
+  - - 246.0
+    - 188.0
+  - - 263.0
+    - 52.0
+  - - 435.0
+    - 49.0
+  - - 457.0
+    - 184.0
+  marker_id: 0
+- name: p07
+  recorded_at: '2026-10-31 16:01:13'
+  joint_rad:
+    Arm1_Joint: 0.0396
+    Arm2_Joint: -0.62782
+    Arm3_Joint: 1.63657
+    Arm4_Joint: 1.01915
+    Arm5_Joint: 0.05121
+    grip_joint: -1.59757
+  corners:
+  - - 241.0
+    - 164.0
+  - - 260.0
+    - 24.0
+  - - 441.0
+    - 19.0
+  - - 465.0
+    - 161.0
+  marker_id: 0
+- name: p08
+  recorded_at: '2026-10-31 16:01:15'
+  joint_rad:
+    Arm1_Joint: 0.0396
+    Arm2_Joint: -0.62782
+    Arm3_Joint: 1.63657
+    Arm4_Joint: 0.84909
+    Arm5_Joint: 0.05249
+    grip_joint: -1.59757
+  corners:
+  - - 252.0
+    - 292.0
+  - - 273.0
+    - 160.0
+  - - 437.0
+    - 157.0
+  - - 464.0
+    - 292.0
+  marker_id: 0
+- name: p09
+  recorded_at: '2026-10-31 16:01:21'
+  joint_rad:
+    Arm1_Joint: 0.04088
+    Arm2_Joint: -0.78125
+    Arm3_Joint: 1.63657
+    Arm4_Joint: 1.17003
+    Arm5_Joint: 0.05249
+    grip_joint: -1.59757
+  corners:
+  - - 245.0
+    - 174.0
+  - - 263.0
+    - 45.0
+  - - 433.0
+    - 40.0
+  - - 456.0
+    - 171.0
+  marker_id: 0
+- name: p10
+  recorded_at: '2026-10-31 16:03:30'
+  joint_rad:
+    Arm1_Joint: 0.03449
+    Arm2_Joint: -0.39894
+    Arm3_Joint: 1.63657
+    Arm4_Joint: 0.91558
+    Arm5_Joint: 0.05249
+    grip_joint: -1.59629
+  corners:
+  - - 233.0
+    - 174.0
+  - - 255.0
+    - 30.0
+  - - 445.0
+    - 25.0
+  - - 474.0
+    - 170.0
+  marker_id: 0
+- name: p11
+  recorded_at: '2026-10-31 16:03:39'
+  joint_rad:
+    Arm1_Joint: 0.03577
+    Arm2_Joint: -0.61247
+    Arm3_Joint: 1.8616
+    Arm4_Joint: 0.90919
+    Arm5_Joint: 0.05121
+    grip_joint: -1.59629
+  corners:
+  - - 232.0
+    - 147.0
+  - - 254.0
+    - 10.0
+  - - 443.0
+    - 5.0
+  - - 471.0
+    - 142.0
+  marker_id: 0
+- name: p12
+  recorded_at: '2026-10-31 16:03:44'
+  joint_rad:
+    Arm1_Joint: 0.03577
+    Arm2_Joint: -0.61247
+    Arm3_Joint: 1.65191
+    Arm4_Joint: 0.91047
+    Arm5_Joint: -0.15081
+    grip_joint: -1.59629
+  corners:
+  - - 246.0
+    - 261.0
+  - - 267.0
+    - 129.0
+  - - 434.0
+    - 125.0
+  - - 462.0
+    - 259.0
+  marker_id: 0
+- name: p13
+  recorded_at: '2026-10-31 16:03:50'
+  joint_rad:
+    Arm1_Joint: 0.03577
+    Arm2_Joint: -0.61247
+    Arm3_Joint: 1.65191
+    Arm4_Joint: 0.91047
+    Arm5_Joint: 0.25323
+    grip_joint: -1.59629
+  corners:
+  - - 246.0
+    - 261.0
+  - - 267.0
+    - 129.0
+  - - 435.0
+    - 126.0
+  - - 462.0
+    - 259.0
+  marker_id: 0
+- name: p14
+  recorded_at: '2026-10-31 16:03:52'
+  joint_rad:
+    Arm1_Joint: 0.03577
+    Arm2_Joint: -0.61375
+    Arm3_Joint: 1.65191
+    Arm4_Joint: 0.91047
+    Arm5_Joint: 0.46037
+    grip_joint: -1.59757
+  corners:
+  - - 246.0
+    - 261.0
+  - - 267.0
+    - 129.0
+  - - 435.0
+    - 126.0
+  - - 462.0
+    - 259.0
+  marker_id: 0
+- name: p15
+  recorded_at: '2026-10-31 16:03:54'
+  joint_rad:
+    Arm1_Joint: 0.03577
+    Arm2_Joint: -0.61247
+    Arm3_Joint: 1.65191
+    Arm4_Joint: 0.91047
+    Arm5_Joint: 0.6739
+    grip_joint: -1.59629
+  corners:
+  - - 246.0
+    - 261.0
+  - - 267.0
+    - 129.0
+  - - 434.0
+    - 125.0
+  - - 462.0
+    - 259.0
+  marker_id: 0
+- name: p16
+  recorded_at: '2026-10-31 16:03:57'
+  joint_rad:
+    Arm1_Joint: 0.03577
+    Arm2_Joint: -0.61247
+    Arm3_Joint: 1.65191
+    Arm4_Joint: 1.124
+    Arm5_Joint: 0.05888
+    grip_joint: -1.59629
+  corners:
+  - - 237.0
+    - 167.0
+  - - 257.0
+    - 34.0
+  - - 438.0
+    - 30.0
+  - - 463.0
+    - 163.0
+  marker_id: 0

@@ -1,0 +1,80 @@
+# =============================================================================
+# DOFBOT Pro 实机标定配置
+#
+# 【当前版本：按照片反推的 offset】——旧版备份在 calibrated_up.yaml
+#
+# 为什么要重做：旧 offset 来自「把臂摆成 SRDF 的 up 再读」那次操作，但拿它渲染
+# 当前实测角度时，手臂是向前塌下去的（Arm2 折了 −57°），而且 Arm4 换算成
+# +120° 直接超出 URDF 限位；对照实物照片，真实姿态是「大臂近乎竖直、到顶部
+# 才弯折、夹爪水平朝左」。说明那次所谓 up 姿态并不是 up。
+#
+# 本次做法：用实物照片估计当前各关节的真实角度，反解 offset：
+#        offset = 实测舵机角 − direction × 关节角 × 57.2958
+#   关节角估计值(rad)：-0.05 / -0.15 / +0.20 / +1.50 / -0.05 / -0.70
+#   实测舵机角(°)   ：152.16 / 87.33 / 203.96 / 258.83 / 107.18 / 147.99
+#   → offset(°)     ：155.02 / 95.92 / 192.50 / 172.89 / 104.32 / 107.88
+#
+# 校验：用这组 offset 渲染，手臂竖直上去、顶部弯折、夹爪水平朝左，与照片一致；
+#       六轴全部落在 URDF 限位内（旧版 Arm4 越限）。
+#
+# ⚠ 这组 offset 的精度只有「肉眼对照照片」的量级（约 ±10°），够做可视化，
+#   不足以做精确抓取。要真正对齐，仍需把臂摆到一个明确已知的姿态后重跑
+#   tools/calibrate.py 做一次严格标定。
+# =============================================================================
+
+model:
+  # 由 tools 里的 urdf2mjcf 从 src/dofbot_pro_description 的 URDF 生成
+  mjcf: models/dofbot_pro.xml
+  # 命名姿态（init/up/close/open…）直接复用 MoveIt 的 SRDF，两边角度不会走偏
+  srdf: ../src/My_JXB_moveit/config/DOFBOT_Pro-V24.srdf
+
+control:
+  # kinematic：直接摆关节角，等价 Ubuntu 上的 mock_components（默认，最稳）
+  # physics  ：走位置执行器 + 重力，看起来更像真机，但会有一点点跟随误差
+  mode: kinematic
+  rate_hz: 50.0
+
+cycle:
+  # 与 src/dofbot_cycle_demo/src/cycle_demo.cpp 的动作顺序一致：
+  # 机械臂去 init → 夹爪闭合 → 机械臂回 up → 夹爪张开
+  steps:
+    - arm: init
+    - grip: close
+    - arm: up
+    - grip: open
+  repeat: 3              # 0 = 一直循环到 Ctrl+C
+  segment_seconds: 6.0   # 每一段运动时长（对应 MoveIt speed≈0.1 的节奏）
+  pause_seconds: 0.5     # 每段之间停顿
+  profile: cosine        # cosine（缓入缓出，默认）| linear
+  endpoint_tolerance_rad: 0.01
+
+servo:
+  enabled: true
+  # Windows 串口名；留空则自动找 CH340
+  port: ""            # 留空=自动找 CH340（串口号会随插拔变化）
+  baudrate: 115200
+  # 下面三道闸沿用 Ubuntu 版设计：
+  #   test_mode=true          只打印 MOVE，不打开串口（默认，先看命令流）
+  #   enable_motion=true      允许发运动指令
+  #   calibration_confirmed   确认真机六轴方向/零点已标定后才设 true
+  test_mode: true
+  enable_motion: true
+  calibration_confirmed: true
+
+  range_deg: 300
+  max_rate_hz: 10.0
+  move_time_ms: 120
+  deadband_deg: 0.2
+  state_timeout_sec: 0.5
+  start_tolerance_deg: 10.0
+
+  # 一个关节一段，比 bridge.yaml 的 5 个并行数组更好读；语义完全一致：
+  #   舵机角度(°) = offset_deg + direction × 关节角(rad) × scale_deg_per_rad
+  joints:
+    - {name: Arm1_Joint, id: 1, offset_deg: 155.02, direction: 1}
+    - {name: Arm2_Joint, id: 2, offset_deg: 95.92, direction: 1}
+    - {name: Arm3_Joint, id: 3, offset_deg: 192.50, direction: 1}
+    - {name: Arm4_Joint, id: 4, offset_deg: 172.89, direction: 1}
+    - {name: Arm5_Joint, id: 5, offset_deg: 104.32, direction: -1}   # 目视对照确认反向
+    # grip 的 offset 用「完全闭合 = -1.6 rad」反解：198.83 = offset + 1.6×57.296
+    - {name: grip_joint, id: 6, offset_deg: 107.88, direction: -1}

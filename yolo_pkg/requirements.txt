@@ -1,0 +1,14 @@
+# 草莓识别最小包依赖（Python 3.9 实测）
+# 联网装: pip install -r requirements.txt
+# 被墙时:  pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r requirements.txt
+
+ultralytics==8.4.41  # YOLO 推理
+numpy==2.0.2  # 数组运算
+opencv-python==4.13.0.92  # 图像显示/处理
+scipy==1.13.1  # 标定用（后续手眼标定需要）
+pillow==11.3.0  # 图像读写
+
+# torch 体积大，建议单独装（按显卡选其一）：
+#  CUDA 12.1:  pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu121
+#  纯 CPU   :  pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cpu
+# 不装的话第一次运行 ultralytics 会自动拉取（可能很慢）

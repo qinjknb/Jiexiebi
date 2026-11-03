@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>dofbot_two_joint_cycle</name>
+  <version>0.1.0</version>
+  <description>Repeated outbound and reverse MoveIt trajectory for DOFBOT PRO Arm1 and Arm2.</description>
+  <maintainer email="qin1291017415@163.com">Qin</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>builtin_interfaces</depend>
+  <depend>trajectory_msgs</depend>
+  <exec_depend>dofbot_pro_moveit</exec_depend>
+  <exec_depend>moveit_configs_utils</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

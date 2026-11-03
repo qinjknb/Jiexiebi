@@ -1,0 +1,2 @@
+[console_scripts]
+servo_bridge = dofbot_servo_bridge.servo_bridge_node:main

@@ -1,0 +1,23 @@
+dofbot_servo_bridge:
+  ros__parameters:
+    serial_port: /dev/ttyUSB0
+    baudrate: 115200
+    test_mode: true
+    enable_motion: false
+    calibration_confirmed: false
+    range_deg: 300
+    max_rate_hz: 10.0
+    move_time_ms: 120
+    deadband_deg: 0.2
+    state_timeout_sec: 0.5
+    start_tolerance_deg: 10.0
+
+    # Arm1～Arm5 plus the gripper's single actuated grip_joint.
+    # These are example mappings. Calibrate each servo before real motion.
+    joint_names: [Arm1_Joint, Arm2_Joint, Arm3_Joint, Arm4_Joint, Arm5_Joint, grip_joint]
+    servo_ids: [1, 2, 3, 4, 5, 6]
+    offsets_deg: [150.0, 150.0, 150.0, 150.0, 150.0, 150.0]
+    directions: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    scales_deg_per_rad: [57.295779513, 57.295779513, 57.295779513, 57.295779513, 57.295779513, 57.295779513]
+    min_degrees: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    max_degrees: [300.0, 300.0, 300.0, 300.0, 300.0, 300.0]

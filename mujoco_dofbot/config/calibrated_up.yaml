@@ -1,0 +1,81 @@
+# =============================================================================
+# DOFBOT Pro 实机标定配置（六轴 offset + direction 均已核对）
+#
+# 标定过程：
+#   1) 把机械臂摆到 SRDF 姿态 `up`（五轴关节角=0），读六个舵机角
+#      → offset_deg = 当时的实测度数（tools/calibrate.py 生成）：
+#        155.02 / 144.32 / 150.48 / 138.17 / 104.76 / (夹爪见下)
+#   2) 目视对照发现 ID5(Arm5)、ID6(grip) 实物与仿真反向 → direction 改为 -1
+#   3) 夹爪 offset 用「完全闭合 = -1.6 rad」反解：
+#        198.83 = offset + (−1)×(−1.6)×57.2958  →  offset = 107.157
+#
+# 校验结果（机械臂停在 SRDF `init` 姿态时实测）：
+#   Arm1  -0.003 (init 0)        Arm4  -1.000 (init -1)
+#   Arm2  +0.472 (init +0.5)     Arm5  +0.003 (init 0)
+#   Arm3  -1.008 (init -1)       最大偏差 1.6°；六轴全部落在 URDF 限位内
+#
+# 各命名姿态对应的舵机角（均在 0~300° 行程内）：
+#   up    : 155.0 / 144.3 / 150.5 / 138.2 / 104.8
+#   init  : 155.0 / 173.0 /  93.2 /  80.9 / 104.8
+#   open  : 夹爪 118.6°      close : 夹爪 175.9°
+#
+# 注意：ID1~ID5 目前仍拒绝执行位置写入（舵机输出级保护停转），
+#       需要把舵机外部供电断电重上电后，实机运动才会生效。
+# =============================================================================
+
+model:
+  # 由 tools 里的 urdf2mjcf 从 src/dofbot_pro_description 的 URDF 生成
+  mjcf: models/dofbot_pro.xml
+  # 命名姿态（init/up/close/open…）直接复用 MoveIt 的 SRDF，两边角度不会走偏
+  srdf: ../src/My_JXB_moveit/config/DOFBOT_Pro-V24.srdf
+
+control:
+  # kinematic：直接摆关节角，等价 Ubuntu 上的 mock_components（默认，最稳）
+  # physics  ：走位置执行器 + 重力，看起来更像真机，但会有一点点跟随误差
+  mode: kinematic
+  rate_hz: 50.0
+
+cycle:
+  # 与 src/dofbot_cycle_demo/src/cycle_demo.cpp 的动作顺序一致：
+  # 机械臂去 init → 夹爪闭合 → 机械臂回 up → 夹爪张开
+  steps:
+    - arm: init
+    - grip: close
+    - arm: up
+    - grip: open
+  repeat: 3              # 0 = 一直循环到 Ctrl+C
+  segment_seconds: 6.0   # 每一段运动时长（对应 MoveIt speed≈0.1 的节奏）
+  pause_seconds: 0.5     # 每段之间停顿
+  profile: cosine        # cosine（缓入缓出，默认）| linear
+  endpoint_tolerance_rad: 0.01
+
+servo:
+  enabled: true
+  # Windows 串口名；留空则自动找 CH340
+  port: ""            # 留空=自动找 CH340（串口号会随插拔变化）
+  baudrate: 115200
+  # 下面三道闸沿用 Ubuntu 版设计：
+  #   test_mode=true          只打印 MOVE，不打开串口（默认，先看命令流）
+  #   enable_motion=true      允许发运动指令
+  #   calibration_confirmed   确认真机六轴方向/零点已标定后才设 true
+  test_mode: true
+  enable_motion: true
+  calibration_confirmed: true
+
+  range_deg: 300
+  max_rate_hz: 10.0
+  move_time_ms: 120
+  deadband_deg: 0.2
+  state_timeout_sec: 0.5
+  start_tolerance_deg: 10.0
+
+  # 一个关节一段，比 bridge.yaml 的 5 个并行数组更好读；语义完全一致：
+  #   舵机角度(°) = offset_deg + direction × 关节角(rad) × scale_deg_per_rad
+  joints:
+    - {name: Arm1_Joint, id: 1, offset_deg: 155.02, direction: 1}
+    - {name: Arm2_Joint, id: 2, offset_deg: 144.32, direction: 1}
+    - {name: Arm3_Joint, id: 3, offset_deg: 150.48, direction: 1}
+    - {name: Arm4_Joint, id: 4, offset_deg: 138.17, direction: 1}
+    - {name: Arm5_Joint, id: 5, offset_deg: 104.76, direction: -1}   # 目视对照确认反向
+    # grip 的 offset 用「完全闭合 = -1.6 rad」反解：198.83 = offset + 1.6×57.296
+    - {name: grip_joint, id: 6, offset_deg: 107.157, direction: -1}

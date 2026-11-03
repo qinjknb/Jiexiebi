@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "source": "example: two-joint cycle 0 -> test(-0.9286,-0.5294) -> 0, 2 seconds per leg",
+  "recorded_at": "2026-10-16",
+  "joints": ["Arm1_Joint", "Arm2_Joint"],
+  "dt_ms": 500,
+  "waypoints": [
+    {"t_ms": 0, "rad": [0.0, 0.0]},
+    {"t_ms": 500, "rad": [-0.4643, -0.2647]},
+    {"t_ms": 1000, "rad": [-0.9286, -0.5294]},
+    {"t_ms": 1500, "rad": [-0.4643, -0.2647]},
+    {"t_ms": 2000, "rad": [0.0, 0.0]}
+  ]
+}

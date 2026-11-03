@@ -1,0 +1,12 @@
+{
+  "sample": "holdout",
+  "position_base_m": [
+    -0.11159165060591754,
+    -0.2804002348650492,
+    0.0032822747366579863
+  ],
+  "position_error_mm": 3.495878191540754,
+  "board_plane_tilt_deg": 0.22061826561240047,
+  "board_height_mm": 3.2822747366579863,
+  "passed": true
+}

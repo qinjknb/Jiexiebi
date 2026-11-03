@@ -1,0 +1,49 @@
+# Photo-based visualization estimate for the pose photographed on 2026-10-31.
+# These offsets are for visual comparison only, not a motion calibration.
+# The visual MJCF rotates the base plate by 180 degrees so the arm faces the
+# short edge beside the monitor, and places the camera above the ID5 housing.
+# ID5's displayed rotation direction follows the physical servo direction.
+# At the measured servo angles (153.70, 89.74, 236.85, 198.97, 103.37,
+# 199.27 degrees), they produce approximately (-0.02, -0.11, +0.77, +1.20,
+# +0.02, -1.59) radians in the MuJoCo model.
+
+model:
+  mjcf: models/dofbot_pro_visual.xml
+  srdf: ../src/My_JXB_moveit/config/DOFBOT_Pro-V24.srdf
+
+control:
+  mode: kinematic
+  rate_hz: 50.0
+
+cycle:
+  steps:
+    - arm: init
+    - grip: close
+    - arm: up
+    - grip: open
+  repeat: 3
+  segment_seconds: 6.0
+  pause_seconds: 0.5
+  profile: cosine
+  endpoint_tolerance_rad: 0.01
+
+servo:
+  enabled: true
+  port: ""
+  baudrate: 115200
+  test_mode: true
+  enable_motion: false
+  calibration_confirmed: false
+  range_deg: 300
+  max_rate_hz: 10.0
+  move_time_ms: 120
+  deadband_deg: 0.2
+  state_timeout_sec: 0.5
+  start_tolerance_deg: 10.0
+  joints:
+    - {name: Arm1_Joint, id: 1, offset_deg: 155.02, direction: 1}
+    - {name: Arm2_Joint, id: 2, offset_deg: 95.92, direction: 1}
+    - {name: Arm3_Joint, id: 3, offset_deg: 192.50, direction: 1}
+    - {name: Arm4_Joint, id: 4, offset_deg: 130.22, direction: 1}
+    - {name: Arm5_Joint, id: 5, offset_deg: 102.42, direction: 1}
+    - {name: grip_joint, id: 6, offset_deg: 107.88, direction: -1}

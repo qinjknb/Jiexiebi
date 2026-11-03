@@ -1,0 +1,22 @@
+# 多标记标定板规格（tools/handeye_calib.py board 生成）
+# 打印后实测黑框边长 70 mm（设计 60 mm），已按实测值重算间距与板面尺寸
+dict: DICT_4X4_50
+cols: 2
+rows: 3
+marker_mm: 70.0
+gap_mm: 23.33
+marker_ids:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+board_mm:
+- 163.3
+- 256.7
+total_mm:
+- 198.3
+- 291.7
+dpi: 300
+measured_note: 用户实测黑框 70 mm（设计 60 mm，打印放大 1.167x，间距按同比例缩放）

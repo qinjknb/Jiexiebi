@@ -1,0 +1,54 @@
+# =============================================================================
+# 实机同步 demo（夹爪单轴）
+#
+# 为什么只动夹爪：实测 ID1~ID5 五路能 PING/READ 但拒绝执行位置写入
+# （连固件自身的 DEMO 摆动都不动），是舵机输出级保护性停转的典型表现，
+# 需要给舵机供电断电重上电才能恢复。ID6（夹爪）工作正常，所以先用它
+# 做一次真实的「仿真 ↔ 实物」同步演示。
+#
+# 跑法：
+#   python run.py --config config/demo_grip.yaml --start-from-servo --servo live
+# =============================================================================
+
+model:
+  mjcf: models/dofbot_pro.xml
+  srdf: ../src/My_JXB_moveit/config/DOFBOT_Pro-V24.srdf
+
+control:
+  mode: kinematic
+  rate_hz: 50.0
+
+cycle:
+  steps:
+    # 夹爪张开 0.25 rad(≈14°)，其余关节不动
+    - relative: {grip_joint: 0.25}
+      hold: 0.5
+    # 合回原处
+    - relative: {grip_joint: 0.00}
+      hold: 0.5
+  repeat: 2
+  segment_seconds: 2.0
+  pause_seconds: 0.3
+  profile: cosine
+  endpoint_tolerance_rad: 0.01
+
+servo:
+  enabled: true
+  port: ""            # 留空=自动找 CH340（串口号会随插拔变化）
+  baudrate: 115200
+  test_mode: false
+  enable_motion: true
+  calibration_confirmed: true      # 只在实测姿态附近做相对微动，不依赖绝对标定
+  range_deg: 300
+  max_rate_hz: 10.0
+  move_time_ms: 120
+  deadband_deg: 0.2
+  state_timeout_sec: 0.5
+  start_tolerance_deg: 10.0
+  joints:
+    - {name: Arm1_Joint, id: 1, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm2_Joint, id: 2, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm3_Joint, id: 3, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm4_Joint, id: 4, offset_deg: 150.0, direction: 1.0}
+    - {name: Arm5_Joint, id: 5, offset_deg: 150.0, direction: 1.0}
+    - {name: grip_joint, id: 6, offset_deg: 150.0, direction: 1.0}

@@ -1,0 +1,105 @@
+# 手眼标定样本（tools/handeye_calib.py 生成）
+# 每个样本 = 一组关节角 + 一张图上 ArUco 四角的像素坐标
+marker:
+  dict: DICT_4X4_50
+  id: 0
+  size_mm: 125.0
+  image_size:
+  - 640
+  - 480
+samples:
+- name: p01
+  recorded_at: '2026-10-31 15:51:39'
+  joint_rad:
+    Arm1_Joint: 0.03321
+    Arm2_Joint: -0.83368
+    Arm3_Joint: 1.78489
+    Arm4_Joint: 1.20839
+    Arm5_Joint: 0.03075
+    grip_joint: -1.59629
+  corners:
+  - - 181.0
+    - 198.0
+  - - 223.0
+    - 44.0
+  - - 422.0
+    - 44.0
+  - - 430.0
+    - 207.0
+  marker_id: 0
+- name: p02
+  recorded_at: '2026-10-31 15:51:42'
+  joint_rad:
+    Arm1_Joint: 0.03449
+    Arm2_Joint: -1.1495
+    Arm3_Joint: 2.09432
+    Arm4_Joint: 1.19944
+    Arm5_Joint: 0.03075
+    grip_joint: -1.59629
+  corners:
+  - - 183.0
+    - 217.0
+  - - 230.0
+    - 84.0
+  - - 418.0
+    - 86.0
+  - - 427.0
+    - 226.0
+  marker_id: 0
+- name: p03
+  recorded_at: '2026-10-31 15:51:45'
+  joint_rad:
+    Arm1_Joint: 0.03449
+    Arm2_Joint: -1.15078
+    Arm3_Joint: 1.79
+    Arm4_Joint: 1.55362
+    Arm5_Joint: 0.0282
+    grip_joint: -1.59757
+  corners:
+  - - 201.0
+    - 235.0
+  - - 239.0
+    - 111.0
+  - - 411.0
+    - 112.0
+  - - 419.0
+    - 239.0
+  marker_id: 0
+- name: p04
+  recorded_at: '2026-10-31 15:51:51'
+  joint_rad:
+    Arm1_Joint: 0.03449
+    Arm2_Joint: -1.1495
+    Arm3_Joint: 1.79512
+    Arm4_Joint: 1.23524
+    Arm5_Joint: -0.65715
+    grip_joint: -1.59757
+  corners:
+  - - 193.0
+    - 213.0
+  - - 231.0
+    - 62.0
+  - - 416.0
+    - 62.0
+  - - 423.0
+    - 220.0
+  marker_id: 0
+- name: p05
+  recorded_at: '2026-10-31 15:51:59'
+  joint_rad:
+    Arm1_Joint: 0.03321
+    Arm2_Joint: -1.1495
+    Arm3_Joint: 1.79256
+    Arm4_Joint: 1.52804
+    Arm5_Joint: -0.37713
+    grip_joint: -1.59757
+  corners:
+  - - 194.0
+    - 191.0
+  - - 232.0
+    - 59.0
+  - - 413.0
+    - 59.0
+  - - 420.0
+    - 196.0
+  marker_id: 0

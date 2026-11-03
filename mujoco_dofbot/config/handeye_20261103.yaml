@@ -1,0 +1,48 @@
+tool_link: DaBai_DCW2_Link
+method: FULL_POSE_FLAT_BOARD
+marker:
+  dict: DICT_4X4_50
+  id: null
+  size_mm: 70.0
+  image_size:
+  - 640
+  - 480
+camera_matrix:
+  fx: 464.0927923872305
+  fy: 464.0927923872305
+  cx: 319.5
+  cy: 239.5
+  dist:
+  - -0.16062155984704465
+  - 0.28587532353627215
+  - 0.0
+  - 0.0
+  - 0.0
+T_tool_cam:
+- - -0.998530443338331
+  - 0.02859956947058295
+  - 0.04603279648960939
+  - 0.016479139209365615
+- - 0.04049733841376163
+  - -0.17067477977183748
+  - 0.9844948375340706
+  - 0.05141613673560182
+- - 0.036012765902631826
+  - 0.9849122723247651
+  - 0.16926575706890684
+  - 0.04142109844765389
+- - 0.0
+  - 0.0
+  - 0.0
+  - 1.0
+marker_in_base_m:
+- -0.11179104464644776
+- -0.2815868598689102
+- 0.0
+spread_std_mm: 2.0482477876662273
+samples: 7
+solved_at: '2026-11-03 15:18:47'
+validation_status: local_holdout_passed
+flat_board_constraint: true
+validation_report: calib/handeye_validation_report_20261103.json
+scope: current mounting and local calibration workspace

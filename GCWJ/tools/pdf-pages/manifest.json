@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "backend": "native",
+  "rasterEngine": "pdfium",
+  "source": "saved",
+  "inputPath": "D:\\GCWJ\\德晟串口智能舵机协议文件 v4.01.pdf",
+  "sourceSha256": "d340ee4685956bb5dd0db02aad49c368264f1a15bfd1f23d35754dfa0eaf9886",
+  "dpi": 150,
+  "pageCount": 7,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "D:\\GCWJ\\tools\\pdf-pages\\page-0001.png",
+      "width": 1241,
+      "height": 1754,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 793.7333333333333,
+        "height": 1122.5333333333333
+      },
+      "byteLength": 126819
+    },
+    {
+      "index": 2,
+      "page": 2,
+      "path": "D:\\GCWJ\\tools\\pdf-pages\\page-0002.png",
+      "width": 1241,
+      "height": 1754,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 793.7333333333333,
+        "height": 1122.5333333333333
+      },
+      "byteLength": 447673
+    },
+    {
+      "index": 3,
+      "page": 3,
+      "path": "D:\\GCWJ\\tools\\pdf-pages\\page-0003.png",
+      "width": 1241,
+      "height": 1754,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 793.7333333333333,
+        "height": 1122.5333333333333
+      },
+      "byteLength": 366088
+    },
+    {
+      "index": 4,
+      "page": 4,
+      "path": "D:\\GCWJ\\tools\\pdf-pages\\page-0004.png",
+      "width": 1241,
+      "height": 1754,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 793.7333333333333,
+        "height": 1122.5333333333333
+      },
+      "byteLength": 512693
+    },
+    {
+      "index": 5,
+      "page": 5,
+      "path": "D:\\GCWJ\\tools\\pdf-pages\\page-0005.png",
+      "width": 1241,
+      "height": 1754,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 793.7333333333333,
+        "height": 1122.5333333333333
+      },
+      "byteLength": 104967
+    },
+    {
+      "index": 6,
+      "page": 6,
+      "path": "D:\\GCWJ\\tools\\pdf-pages\\page-0006.png",
+      "width": 1241,
+      "height": 1754,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 793.7333333333333,
+        "height": 1122.5333333333333
+      },
+      "byteLength": 350097
+    },
+    {
+      "index": 7,
+      "page": 7,
+      "path": "D:\\GCWJ\\tools\\pdf-pages\\page-0007.png",
+      "width": 1241,
+      "height": 1754,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 793.7333333333333,
+        "height": 1122.5333333333333
+      },
+      "byteLength": 185860
+    }
+  ],
+  "missingFonts": []
+}
